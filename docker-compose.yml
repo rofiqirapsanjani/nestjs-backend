@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  # nest js application service
+  tir-app:
+    image: sanjanivicky/nest-backend:v1 # Specify the Docker image for the nest application
+    environment:
+      - DATABASE_URL=mongodb://localhost:27017/studentdb
+    ports:
+      - "3000:3000" # Map port 80 on the host to port 8080 on the container
+    restart: always # Apply the "always" restart policy
+
+  # MongoDB service
+  tier-db:
+    image: bitnami/mongodb:latest # Specify the Docker image for MongoDB
+    volumes:
+      - app-db:/data/db # Mount a volume for MongoDB data
+    ports:
+      - "27017:27017"
+    restart: always # Apply the "always" restart policy
+
+# Define a named volume for MongoDB data
+volumes:
+  app-db:
