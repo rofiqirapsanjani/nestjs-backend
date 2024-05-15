@@ -5,7 +5,7 @@ services:
   tier-app:
     image: sanjanivicky/nest-backend:v1 # Specify the Docker image for the Nest.js application
     environment:
-      - DATABASE_URL=mongodb://172.30.0.3:27017/studentdb # Use the ip address of mongodb for the MongoDB connection string
+      - DATABASE_URL=mongodb://172.30.0.3:27017/studentdb # Use the ip address of mongodb to connect to MongoDB
     ports:
       - "3000:3000" # Map port 3000 on the host to port 3000 on the container
     restart: always # Apply the "always" restart policy to ensures that the container restarts automatically if it stops.
