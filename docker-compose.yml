@@ -1,14 +1,17 @@
 version: '3'
 
 services:
-  # nest js application service
+  # Nest.js application service
   tir-app:
-    image: sanjanivicky/nest-backend:v1 # Specify the Docker image for the nest application
+    image: sanjanivicky/nest-backend:v1 # Specify the Docker image for the Nest.js application
     environment:
-      - DATABASE_URL=mongodb://localhost:27017/studentdb
+      - DATABASE_URL=mongodb://172.30.0.3:27017/studentdb # Use the service name 'tier-db' for the MongoDB connection string
     ports:
-      - "3000:3000" # Map port 80 on the host to port 8080 on the container
+      - "3000:3000" # Map port 3000 on the host to port 3000 on the container
     restart: always # Apply the "always" restart policy
+    networks:
+      app-network:
+        ipv4_address: 172.30.0.2
 
   # MongoDB service
   tier-db:
@@ -16,9 +19,20 @@ services:
     volumes:
       - app-db:/data/db # Mount a volume for MongoDB data
     ports:
-      - "27017:27017"
+      - "27017:27017" # Map port 27017 on the host to port 27017 on the container
     restart: always # Apply the "always" restart policy
+    networks:
+      app-network:
+        ipv4_address: 172.30.0.3
 
 # Define a named volume for MongoDB data
 volumes:
   app-db:
+
+    # Define a custom network with a specific subnet
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/16
